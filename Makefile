@@ -9,7 +9,7 @@ SDL2_LIBS := $(shell sdl2-config --libs)
 SRC_DIR=srcs/
 BUILD_DIR=.build/
 
-SRC_FILES=main.c
+SRC_FILES=main.c parsing.c
 
 SRC=$(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJS=$(addprefix $(BUILD_DIR), $(patsubst %.c, %.o, $(SRC_FILES)))
@@ -36,6 +36,9 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+debug:
+	make re "CFLAGS=-Wall -Wextra -Werror -g"
+
+.PHONY: all clean fclean re debug
 
 -include $(DEPS)
