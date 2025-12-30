@@ -42,7 +42,7 @@ int	init_sdl(t_sdl_ctx *display, t_bmp_img *img)
 
 int	fill_texture(t_sdl_ctx *display, t_bmp_img *img)
 {
-	if (SDL_UpdateTexture(display->texture, NULL, img->pixels, img->info_header->width) != 0)
+	if (SDL_UpdateTexture(display->texture, NULL, img->pixels, (img->info_header->width) * sizeof(t_pixel)) != 0)
 		return (exit_sdl("Error updating the texture", display, img));
 	return (0);
 }
