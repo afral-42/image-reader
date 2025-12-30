@@ -27,9 +27,9 @@ int	parse_bmp_file(t_bmp_img *img)
 	return (0);
 }
 
-int	load_bmp_file(t_bmp_img *img)
+int	load_bmp_file(char *filename, t_bmp_img *img)
 {
-	img->fd = open("../tests/IMG_6676.bmp", O_RDONLY);
+	img->fd = open(filename, O_RDONLY);
 	if (img->fd == -1)
 		return (exit_parsing("Error opening the file", img));
 	if (fstat(img->fd, &(img->stats)) == -1)
@@ -74,20 +74,4 @@ int	parse_pixels(t_bmp_img *img)
 		y--; // On passe à la ligne d'au dessus
 	}
 	return (0);
-}
-
-int	main(void)
-{
-	t_bmp_img	img = {0};
-
-	if (load_bmp_file(&img) == -1)
-		return (1);
-	if (parse_bmp_file(&img) == -1)
-		return (1);
-	if (parse_pixels(&img) == -1)
-		return (-1);
-
-	printf("Signature : %#X\n", img.file_header->signature);
-	printf("Size : %u\n\n", (int)(img.file_header->file_size));
-	exit_parsing(NULL, &img);
 }

@@ -11,6 +11,13 @@
 
 #pragma pack(push, 1)
 
+typedef struct	s_pixel
+{
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
+}	t_pixel;
+
 typedef struct	s_bmp_file_header
 {
 	uint16_t	signature;
@@ -41,10 +48,16 @@ typedef struct	s_bmp_img
 {
 	int					fd;
 	void				*data;
-	uint8_t				pixels;
+	t_pixel				*pixels;
+	uint8_t				*raw_pixels;
 	struct stat			stats;
 	t_bmp_file_header	*file_header;
 	t_bmp_info_header	*info_header;
 }	t_bmp_img;
+
+int	exit_parsing(char *error, t_bmp_img *img);
+int	parse_bmp_file(t_bmp_img *img);
+int	load_bmp_file(char *filename, t_bmp_img *img);
+int	parse_pixels(t_bmp_img *img);
 
 #endif
