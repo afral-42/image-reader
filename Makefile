@@ -9,7 +9,7 @@ SDL2_LIBS := $(shell sdl2-config --libs)
 SRC_DIR=srcs/
 BUILD_DIR=.build/
 
-SRC_FILES=main.c parsing.c
+SRC_FILES=main.c parsing.c display.c
 
 SRC=$(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJS=$(addprefix $(BUILD_DIR), $(patsubst %.c, %.o, $(SRC_FILES)))
