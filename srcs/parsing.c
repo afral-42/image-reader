@@ -40,8 +40,8 @@ int	check_file_validity(t_bmp_img *img)
 
 	if (img->info_header->width <= 0 || img->info_header->height <= 0)
     	return (exit_parsing("Invalid dimensions or unsupported Top-Down BMP", img));
-	if ((size_t)(img->info_header->width > WIDTH_MAX) || 
-		(size_t)(img->info_header->height > HEIGHT_MAX))
+	if ((size_t)(img->info_header->width) > WIDTH_MAX || 
+		(size_t)(img->info_header->height) > HEIGHT_MAX)
 		return (exit_parsing("Image dimensions too large (max 10000x10000)", img));
 
 	return (0);
