@@ -22,10 +22,10 @@ int	exit_parsing(char *error, t_bmp_img *img)
 
 int	check_file_validity(t_bmp_img *img)
 {
-	if ((size_t)(img->file_header->file_size) != (size_t)(img->stats.st_size))
-		return (exit_parsing("Invalid file size", img));
 	if ((int)(img->file_header->signature) != 0x4D42)
 		return (exit_parsing("File is not a BMP format", img));
+	if ((size_t)(img->file_header->file_size) != (size_t)(img->stats.st_size))
+		return (exit_parsing("Invalid file size", img));
 
 	if ((int)(img->info_header->compression))
 		return (exit_parsing("Compression is not supported", img));
@@ -43,7 +43,7 @@ int	check_file_validity(t_bmp_img *img)
 	if ((size_t)(img->info_header->width > WIDTH_MAX) || 
 		(size_t)(img->info_header->height > HEIGHT_MAX))
 		return (exit_parsing("Image dimensions too large (max 10000x10000)", img));
-		
+
 	return (0);
 }
 
