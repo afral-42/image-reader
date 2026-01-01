@@ -27,14 +27,14 @@ int	check_file_validity(t_bmp_img *img)
 	if ((size_t)(img->file_header->file_size) != (size_t)(img->stats.st_size))
 		return (exit_parsing("Invalid file size", img));
 
-	if ((int)(img->info_header->compression))
-		return (exit_parsing("Compression is not supported", img));
 	if ((size_t)(img->info_header->header_size) != 40 && 
 		(size_t)(img->info_header->header_size) != 52 &&
 		(size_t)(img->info_header->header_size) != 56 &&
 		(size_t)(img->info_header->header_size) != 108 &&
 		(size_t)(img->info_header->header_size) != 124)
 		return (exit_parsing("Invalid BMP Version, only versions >= 40 supported", img));
+	if ((int)(img->info_header->compression))
+		return (exit_parsing("Compression is not supported", img));
 	if ((size_t)(img->info_header->bpp) != 24)
 		return (exit_parsing("Only 24 bpp supported", img));
 
