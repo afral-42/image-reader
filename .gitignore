@@ -1,0 +1,8 @@
+.build/
+.build/*
+img_reader
+tests
+tests/*
+srcs/a.out
+*.out
+*.dSYM

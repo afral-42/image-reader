@@ -14,10 +14,6 @@ int main(int ac, char **av)
 		return (1);
 	if (parse_pixels(&img) == -1)
 		return (-1);
-
-	printf("Signature : %#X\n", img.file_header->signature);
-	printf("Size : %u\n\n", (int)(img.file_header->file_size));
-
 	if (init_sdl(&display, &img) == -1)
 		return (1);
 	if (fill_texture(&display, &img) == -1)

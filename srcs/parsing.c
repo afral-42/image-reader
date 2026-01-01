@@ -5,7 +5,12 @@
 int	exit_parsing(char *error, t_bmp_img *img)
 {
 	if (error)
-		perror(error);
+	{
+		if (errno)
+			perror(error);
+		else
+			fprintf(stderr, "Error : %s", error);
+	}
 	if (img->fd && img->fd != -1)
 		close(img->fd);
 	if (img->data && img->data != MAP_FAILED && img->stats.st_size > 0)
@@ -15,6 +20,33 @@ int	exit_parsing(char *error, t_bmp_img *img)
 	return (-1);
 }
 
+int	check_file_validity(t_bmp_img *img)
+{
+	if ((size_t)(img->file_header->file_size) != (size_t)(img->stats.st_size))
+		return (exit_parsing("Invalid file size", img));
+	if ((int)(img->file_header->signature) != 0x4D42)
+		return (exit_parsing("File is not a BMP format", img));
+
+	if ((int)(img->info_header->compression))
+		return (exit_parsing("Compression is not supported", img));
+	if ((size_t)(img->info_header->header_size) != 40 && 
+		(size_t)(img->info_header->header_size) != 52 &&
+		(size_t)(img->info_header->header_size) != 56 &&
+		(size_t)(img->info_header->header_size) != 108 &&
+		(size_t)(img->info_header->header_size) != 124)
+		return (exit_parsing("Invalid BMP Version, only versions >= 40 supported", img));
+	if ((size_t)(img->info_header->bpp) != 24)
+		return (exit_parsing("Only 24 bpp supported", img));
+
+	if (img->info_header->width <= 0 || img->info_header->height <= 0)
+    	return (exit_parsing("Invalid dimensions or unsupported Top-Down BMP", img));
+	if ((size_t)(img->info_header->width > WIDTH_MAX) || 
+		(size_t)(img->info_header->height > HEIGHT_MAX))
+		return (exit_parsing("Image dimensions too large (max 10000x10000)", img));
+		
+	return (0);
+}
+
 int	parse_bmp_file(t_bmp_img *img)
 {
 	img->data = mmap(NULL, img->stats.st_size, PROT_READ, MAP_PRIVATE, img->fd, 0);
@@ -22,7 +54,8 @@ int	parse_bmp_file(t_bmp_img *img)
 		return (exit_parsing("Mmap error", img));
 	img->file_header = (t_bmp_file_header *)img->data;
 	img->info_header = (t_bmp_info_header *)(((uint8_t *)img->data) + 14);
-	// Checker la validité du fichier
+	if (check_file_validity(img) == -1)
+		return (-1);
 	img->raw_pixels = ((uint8_t *)img->data + img->file_header->data_offset);
 	return (0);
 }

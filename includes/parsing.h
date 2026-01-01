@@ -9,6 +9,9 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
+# define WIDTH_MAX 10000
+# define HEIGHT_MAX 10000
+
 #pragma pack(push, 1)
 
 typedef struct	s_pixel
